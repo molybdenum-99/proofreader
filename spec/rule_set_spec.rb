@@ -1,6 +1,6 @@
 RSpec.describe Proofreader::RuleSet do
   let(:grammar_xml) do
-    path = File.expand_path('../../files/grammar.xml', __FILE__)
+    path = File.expand_path('../../data/en/grammar.xml', __FILE__)
     file = File.open(path)
     Nokogiri::XML(file)
   end
