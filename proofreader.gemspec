@@ -1,18 +1,17 @@
 
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "proofreader/version"
+require 'proofreader/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "proofreader"
+  spec.name          = 'proofreader'
   spec.version       = Proofreader::VERSION
-  spec.authors       = ["igors"]
-  spec.email         = ["igors@roundforest.com"]
+  spec.authors       = ['llighterr']
+  spec.email         = ['strum.at.sky@gmail.com']
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
-  spec.license       = "MIT"
+  spec.summary       = %q{Pure-Ruby multilanguage proofreader.}
+  spec.homepage      = 'https://github.com/molybdenum-99/proofreader'
+  spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -30,7 +29,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency 'nokogiri', '~> 1.8', '>= 1.8.1'
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency 'byebug', '~> 9.1'
 end
