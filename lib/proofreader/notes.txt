@@ -1,0 +1,16 @@
+english < rules
+wikipedia < category
+wikipedia_contraction < rulegroup
+rule_1 < rule
+
+english (Hand)
+  english.rb (Hand)
+  wikipedia (Script)
+    wikipedia.rb < category (Script)
+    wikipedia_contraction (Script)
+      wikipedia_contraction.rb < rulegroup (Script)
+        rule_1.rb < rule (Script)
+        rule_2.rb < rule (Script)
+
+TO DO:
+1. What to do about ruleset?
