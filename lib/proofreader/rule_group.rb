@@ -3,7 +3,7 @@ class Proofreader
     def initialize
       @default = true
       @id = nil
-      @type = nil
+      @name = nil # Was incorrectly type
     end
   end
 end
