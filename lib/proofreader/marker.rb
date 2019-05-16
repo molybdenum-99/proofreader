@@ -24,6 +24,10 @@ class Proofreader
   end
 end
 
+<<<<<<< HEAD
 # SOURCE: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/pattern.xsd
 # TODO 1: Is this a collection? Can there be more than one? Current class assumes only one. XML schema doesn't specify minOccurs or maxOccurs
 # TODO 2: Return [] or nil? Since a collection is expected back (maxOccur for marker is unbounded) [] makes sense
+=======
+# TODO 1: Is this a collection? Can there be more than one? Current class assumes only one. XML schema doesn't specify minOccurs or maxOccurs
+>>>>>>> Updated all classes with optional attributes and nested elements outside of those nested inside of pattern. Only one complete in pattern is token.
