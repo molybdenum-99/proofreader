@@ -1,3 +1,5 @@
+require_relative 'suggestion'
+
 class Proofreader
   class Message
     def initialize(message:, suggestions:)
@@ -19,8 +21,8 @@ class Proofreader
 
       def from_xml(message_xml)
         {
-          message: message_xml.attribute('case_sensitive')&.value,
-          suggestions: nil #Suggestion.call(message_xml.xpath('suggestion')) # TODO 2
+          message: message_xml.attribute('case_sensitive')&.value == 'yes' ? true : false,
+          suggestions: Suggestion.call(message_xml.xpath('suggestion'))
         }
       end
     end
@@ -29,5 +31,3 @@ end
 
 # TODO: Should Suggestion be namespaced under Message? So Proofreader::Message::Suggestion? Suggestion tags only appear under messages
 # this has ramifications for other tags that only ever appear under under tags (only patterns and antipatterns have token if I recall correctly?)
-
-# TODO 2: Implement Suggestion class.

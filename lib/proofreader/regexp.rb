@@ -1,7 +1,9 @@
 class Proofreader
   class Regexp
-    def initialize(case_sensitive:)
-      @case_sensitive = case_sensitive
+      def initialize(case_sensitive:, type:, mark:)
+      @case_sensitive = case_sensitive # Optional Attribute
+      @type = type                     # Optional Attribute
+      @mark = mark                     # Optional Attribute
     end
 
     def self.call(regexp_xml)
@@ -9,7 +11,7 @@ class Proofreader
 
       parsed_regexp = from_xml(regexp_xml) 
 
-      new(case_sensitive: parsed_regexp[:case_sensitive])
+      new(case_sensitive: parsed_regexp[:case_sensitive], type: parsed_regexp[:type], mark: parsed_regexp[:mark])
     end
 
     class << self
@@ -18,7 +20,9 @@ class Proofreader
 
       def from_xml(regexp_xml)
         {
-          case_sensitive: !!regexp_xml.attribute('case_sensitive')&.value
+          case_sensitive: !!regexp_xml.attribute('case_sensitive')&.value == 'yes' ? true : false,
+          type: regexp_xml.attribute('type')&.value,
+          mark: regexp_xml.attribute('mark')&.value
         }
       end
     end

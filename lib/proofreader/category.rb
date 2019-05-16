@@ -1,30 +1,37 @@
-require 'nokogiri'
 require 'pry'
 require_relative 'rule'
 require_relative 'rule_group'
 
 class Proofreader 
   class Category 
-    def initialize(default:, id:, type:, name:, rules:)
-      @default = default
-      @id = id
-      @type = type
-      @name = name
-      # @rulegroups = rulegroups
-      @rules = rules
+    def initialize(default:, name:, id:, type:, external:, tab:, rules:, rulegroups:)
+      @default = default       # Required attribute
+      @name = name             # Optional attribute
+      @id = id                 # Optional attribute 
+      @type = type             # Optional attribute
+      @external = external     # Optional attribute
+      @tab = tab               # Optional attribute
+      @rules = rules           # Nested Element
+      @rulegroups = rulegroups # Nested Element
     end
 
-    def self.call(category_xml)
-      parsed_category = from_xml(category_xml)
+    def self.call(categories_xml)
+      return [] if categories_xml.empty?
 
-      category = new(default: parsed_category[:default], 
-          id: parsed_category[:id], 
-          type: parsed_category[:type], 
-          name: parsed_category[:name], 
-          # rulegroups: parsed_category[:rulegroups], 
-          rules: parsed_category[:rules])
+      categories_xml.map do |category_xml|
+        if category_xml.attributes['name'].value == 'Wikipedia' # NOTE: Parsed grammar.xml without raising, but still limiting scope to Wikipedia.
+          parsed_category = from_xml(category_xml)
 
-      pp category
+          new(default: parsed_category[:default], 
+              name: parsed_category[:name], 
+              id: parsed_category[:id], 
+              type: parsed_category[:type], 
+              external: parsed_category[:external], 
+              tab: parsed_category[:tab], 
+              rules: parsed_category[:rules],
+              rulegroups: parsed_category[:rulegroups])
+        end
+      end.compact
     end
 
     class << self
@@ -33,31 +40,16 @@ class Proofreader
 
       def from_xml(category_xml)
         {
-          default: category_xml.attribute('default')&.value == 'off' ? false : true,
+          default: category_xml.attribute('default')&.value == 'on' ? true : false,
+          name: category_xml.attribute('name')&.value,
           id: category_xml.attribute('id')&.value,
           type: category_xml.attribute('type')&.value,
-          name: category_xml.attribute('name')&.value,
-          # rulegroups: RuleGroup.call(category_xml.xpath('rulegroup'))
-          rules: Rule.call(category_xml.xpath('rule'))
+          external: category_xml.attribute('external')&.value,
+          tab: category_xml.attribute('tab')&.value,
+          rules: Rule.call(category_xml.xpath('rule')),
+          rulegroups: RuleGroup.call(category_xml.xpath('rulegroup'))
         }
       end
     end
-
-    # def parse_rules
-    #   @raw_rules.each do |raw_rule|
-    #     build_rule(raw_rule, raw_rule.attributes['id'].value, raw_rule.attributes['name'].value, false)
-    #   end
-      
-    #   @raw_rulegroups.each do |raw_rulegroup|
-    #     raw_rulegroup_rules = raw_rulegroup.xpath('rule')
-
-    #     raw_rulegroup_rules.each do |raw_rulegroup_rule|
-    #       build_rule(raw_rulegroup_rule, raw_rulegroup.attributes['id'].value, raw_rulegroup.attributes['name'].value, true)
-    #     end
-    #   end
-    # end
   end
 end
-
-# NOTE: @rules only contains rules that aren't in a rulegroup. @rulegroups contains rules nested inside of rulegroups.
-# TODO: Use category_xml.attribute('id'). Cleaner

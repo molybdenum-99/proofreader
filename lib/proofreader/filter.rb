@@ -1,8 +1,8 @@
 class Proofreader
   class Filter
     def initialize(filter_class:, args: )
-      @class = filter_class
-      @args = args
+      @class = filter_class # Required Attribute
+      @args = args          # Required Attribute
     end
 
     def self.call(filter_xml)

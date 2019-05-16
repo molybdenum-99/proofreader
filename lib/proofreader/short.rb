@@ -1,7 +1,7 @@
 class Proofreader
   class Short
-    def initialize(short: )
-      @short = short
+    def initialize(short:)
+      @short = short # Found no other attributes or nested elements in XML schema.
     end
 
     def self.call(short_xml)
@@ -21,4 +21,4 @@ class Proofreader
   end
 end
 
-# TODO 1: Check against master XML documentation about what all attributes can live on short.
+# TODO 1: No additional information about short on the XML documentation outside of its inclusion as a simple type inside of complex type elements
