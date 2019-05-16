@@ -2,20 +2,20 @@ require_relative 'match'
 
 class Proofreader
   class Suggestion
-    def initialize(suppress_misspelled:, suggestion:, match:)
+    def initialize(suppress_misspelled:, suggestion:, matches:)
       @suppress_misspelled = suppress_misspelled # Optional Attribute
-      @match = match                             # Nested Element
+      @matches = matches                         # Nested Element
       @suggestion = suggestion                   # Suggestion Text
     end
 
-    def self.call(suggestions_xml)
-      return nil if suggestions_xml.empty?
+    def self.call(suggestion_xmls)
+      return [] if suggestion_xmls.empty? # NOTE: maxOccur unbounded
 
-      suggestions_xml.map do |suggestion_xml|
+      suggestion_xmls.map do |suggestion_xml|
         parsed_suggestion = from_xml(suggestion_xml)
 
         new(suppress_misspelled: parsed_suggestion[:suppress_misspelled], 
-            match: parsed_suggestion[:match], 
+            matches: parsed_suggestion[:matches], 
             suggestion: parsed_suggestion[:suggestion])
       end
     end
@@ -27,7 +27,7 @@ class Proofreader
       def from_xml(suggestion_xml)
         {
           suppress_misspelled: suggestion_xml.attribute('supress_misspelled')&.value,
-          match: nil, #Match.call(suggestion_xml.attribute('match')),
+          matches: Match.call(suggestion_xml.xpath('match')),
           suggestion: suggestion_xml.text
         }
       end
@@ -35,4 +35,4 @@ class Proofreader
   end
 end
 
-# TODO 1: Create a Match class. 
+# SOURCE: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd

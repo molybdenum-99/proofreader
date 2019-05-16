@@ -7,7 +7,7 @@ class Proofreader
     end
 
     def self.call(regexp_xml)
-      return nil if regexp_xml.empty?
+      return nil if regexp_xml.empty? # NOTE: No maxOccur specified. See TODO: 1
 
       parsed_regexp = from_xml(regexp_xml) 
 
@@ -29,4 +29,6 @@ class Proofreader
   end
 end
 
+# SOURCE: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd
+# TODO 1: Can we have more than on regexp nested inside an element? Can't find example grammar.xml's that have more than one.
 # NOTE: Only 4 uses of the regexp tag in all of grammar.xml. It is much more commonly used as an attribute on other XML tags.

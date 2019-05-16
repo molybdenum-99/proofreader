@@ -15,23 +15,23 @@ class Proofreader
       @rulegroups = rulegroups # Nested Element
     end
 
-    def self.call(categories_xml)
-      return [] if categories_xml.empty?
+    def self.call(category_xmls)
+      return [] if category_xmls.empty?
 
-      categories_xml.map do |category_xml|
-        if category_xml.attributes['name'].value == 'Wikipedia' # NOTE: Parsed grammar.xml without raising, but still limiting scope to Wikipedia.
-          parsed_category = from_xml(category_xml)
+      category_xmls.map do |category_xml|
+        #if category_xml.attributes['name'].value == 'Wikipedia' # Limiting scope to Wikipedia.
+         parsed_category = from_xml(category_xml)
 
-          new(default: parsed_category[:default], 
-              name: parsed_category[:name], 
-              id: parsed_category[:id], 
-              type: parsed_category[:type], 
-              external: parsed_category[:external], 
-              tab: parsed_category[:tab], 
-              rules: parsed_category[:rules],
-              rulegroups: parsed_category[:rulegroups])
-        end
-      end.compact
+        new(default: parsed_category[:default], 
+            name: parsed_category[:name], 
+            id: parsed_category[:id], 
+            type: parsed_category[:type], 
+            external: parsed_category[:external], 
+            tab: parsed_category[:tab], 
+            rules: parsed_category[:rules],
+            rulegroups: parsed_category[:rulegroups])
+         #end
+      end
     end
 
     class << self
@@ -53,3 +53,5 @@ class Proofreader
     end
   end
 end
+
+# SOURCE: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd

@@ -1,3 +1,5 @@
+require_relative 'exception'
+
 class Proofreader
   class Token
     def initialize(postag_regexp:, inflected:, negate:, regexp:, chunk:, spacebefore:, postag:, skip:, min:, max:, negate_pos:, case_sensitive:, exceptions:, marker:, token:)
@@ -18,11 +20,10 @@ class Proofreader
       @token = token                   # NOTE: Token text.
     end
 
-    def self.call(tokens_xml)
-      return [] if tokens_xml.empty? # NOTE If we expect a collection, and there is not one, return empty array, else return nil (if object was expected, or single string, etc.)
+    def self.call(token_xmls)
+      return [] if token_xmls.empty? # NOTE If we expect a collection, and there is not one, return empty array, else return nil (if object was expected, or single string, etc.)
 
-      tokens_xml.map do |token_xml|
-
+      token_xmls.map do |token_xml|
         parsed_token = from_xml(token_xml) 
 
         new(postag_regexp: parsed_token[:postag_regexp],
@@ -61,7 +62,7 @@ class Proofreader
           max: token_xml.attribute('max')&.value,
           negate_pos: token_xml.attribute('negate_pos')&.value == 'yes' ? true : false,
           case_sensitive: token_xml.attribute('case_sensitive')&.value ? true : false,
-          exceptions: nil, #Exception.call(token_xml.xpath('exception')),
+          exceptions: Exception.call(token_xml.xpath('exception')),
           marker: Marker.call(token_xml.xpath('marker')),
           token: token_xml.text
         }
@@ -70,7 +71,6 @@ class Proofreader
   end
 end
 
-# TODO 1: Figure out how to parse markers to separate tokens.
-# TODO 2: Clean up
-# TODO 3: See Master TODO as well. XML has different ways of listing options; 'yes/no', 'ignore', 'on/off'. Standardize? Or use XML nomenclature?
-# TODO 4: Build Exception class
+# SOURCE: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd 
+# TODO 1: Clean up
+# TODO 2: See Master TODO as well. XML has different ways of listing options; 'yes/no', 'ignore', 'on/off'. Standardize? Or use XML nomenclature?

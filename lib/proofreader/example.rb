@@ -10,10 +10,10 @@ class Proofreader
       @example = example          # Text of example
     end
 
-    def self.call(examples_xml)
-      return nil if examples_xml.empty?
+    def self.call(example_xmls)
+      return [] if example_xmls.empty? # NOTE: maxOccurs unbounded.
 
-      examples_xml.map do |example_xml|
+      example_xmls.map do |example_xml|
         parsed_example = from_xml(example_xml) 
 
         new(correction: parsed_example[:correction], 
@@ -41,4 +41,4 @@ class Proofreader
   end
 end
 
-#TODO 1: Find out if you can have multiple markers (so we rename @marker to @markers)
+# SOURCE: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd

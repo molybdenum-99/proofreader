@@ -1,4 +1,6 @@
 require_relative 'category' 
+require_relative 'unification'
+require_relative 'phrases'
 
 class Proofreader
   class Rules
@@ -11,17 +13,19 @@ class Proofreader
       @categories = categories   # Nested Element # NOTE: Tag is singular, but I made attribute plural. Use singular or plural?
     end
 
-    def self.call(rules_xml)
-      return nil if rules_xml.empty?
+    def self.call(rules_xmls)
+      return [] if rules_xmls.empty? # NOTE: maxOccur unbounded. Not what I expected. I assume one rules per lang, but I guess not.
 
-      parsed_rules = from_xml(rules_xml)
+      rules_xmls.map do |rules_xml|   
+        parsed_rules = from_xml(rules_xml)
 
-      new(lang: parsed_rules[:lang], 
-          idprefix: parsed_rules[:idprefix], 
-          integrate: parsed_rules[:integrate],
-          unification: parsed_rules[:unification],
-          phrases: parsed_rules[:phrases],
-          categories: parsed_rules[:categories])
+        new(lang: parsed_rules[:lang], 
+            idprefix: parsed_rules[:idprefix], 
+            integrate: parsed_rules[:integrate],
+            unification: parsed_rules[:unification],
+            phrases: parsed_rules[:phrases],
+            categories: parsed_rules[:categories])
+      end
     end
 
     class << self
@@ -33,8 +37,8 @@ class Proofreader
           lang: rules_xml.attribute('lang')&.value,
           idprefix: rules_xml.attribute('idprefix')&.value,
           integrate: rules_xml.attribute('integrate')&.value,
-          unification: nil, #Unification.call(rules_xml.xpath('unification'))
-          phrases: nil, #Phrases.call(rules_xml.xpath('phrases'))
+          unification: Unification.call(rules_xml.xpath('unification')),
+          phrases: Phrases.call(rules_xml.xpath('phrases')),
           categories: Category.call(rules_xml.xpath('category'))
         }
       end
@@ -42,4 +46,4 @@ class Proofreader
   end
 end
 
-# TODO: For future, create Unification and Phrases classes per XML documentation.
+# SOURCE: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd

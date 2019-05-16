@@ -5,7 +5,7 @@ class Proofreader
     end
 
     def self.call(url_xml)
-      return nil if url_xml.empty?
+      return nil if url_xml.empty? # NOTE: maxOccur not specified
 
       new(url: from_xml(url_xml))
     end
@@ -21,4 +21,5 @@ class Proofreader
   end
 end
 
+# SOURCE: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd
 # TODO 1: # TODO 1: No additional information about short on the XML documentation outside of its inclusion as a simple type inside of complex type elements
