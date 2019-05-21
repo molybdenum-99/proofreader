@@ -19,7 +19,7 @@ class Proofreader
       return [] if category_xmls.empty?
 
       category_xmls.map do |category_xml|
-        #if category_xml.attributes['name'].value == 'Wikipedia' # Limiting scope to Wikipedia.
+        if category_xml.attributes['name'].value == 'Wikipedia' # Limiting scope to Wikipedia.
          parsed_category = from_xml(category_xml)
 
         new(default: parsed_category[:default], 
@@ -30,7 +30,7 @@ class Proofreader
             tab: parsed_category[:tab], 
             rules: parsed_category[:rules],
             rulegroups: parsed_category[:rulegroups])
-         #end
+         end
       end
     end
 
