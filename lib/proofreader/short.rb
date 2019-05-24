@@ -1,22 +1,13 @@
+require_relative 'base'
+
 class Proofreader
-  class Short
-    def initialize(short:)
-      @short = short # Found no other attributes or nested elements in XML schema.
-    end
+  class Short < Base
+    initialize_with :short
 
-    def self.call(short_xml)
-      return nil if short_xml.empty?  # NOTE: No maxOccur specified in XML
-
-      new(short: from_xml(short_xml))
-    end
-
-    class << self 
+    def self.from_xml(short_xml)
+      return nil if short_xml.nil?
       
-      private
-
-      def from_xml(short_xml)
-        short_xml.text
-      end
+      new(short: short_xml.text)
     end
   end
 end

@@ -1,31 +1,18 @@
+require_relative 'base'
 require_relative 'equivalence'
 
 class Proofreader
-  class Unification
-    def initialize(feature:, equivalence:)
-      @feature = feature          # Required Attribute
-      @equivalence = equivalence  # Nested Element
-    end
+  class Unification < Base
+    initialize_with :feature, :equivalence
 
-    def self.call(unification_xmls)
-      return [] if unification_xmls.empty?  # NOTE: maxOccur unbounded
-
-      unification_xmls.map do |unification_xml|
-        parsed_unification = from_xml(unification_xml)
+    def self.from_xml(unification_xmls)
+      return [] if unification_xmls.nil?
       
-        new(feature: parsed_unification[:feature], equivalence: parsed_unification[:equivalence])
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(unification_xml)
-        {
+      unification_xmls.map do |unification_xml|
+        new(
           feature: unification_xml.attribute('feature')&.value,
-          equivalence: Equivalence.call(unification_xml.xpath('equivalence'))
-        }
+          equivalence: Equivalence.from_xml(unification_xml.xpath('equivalence'))
+        )
       end
     end
   end

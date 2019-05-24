@@ -1,22 +1,13 @@
+require_relative 'base'
+
 class Proofreader
-  class Type
-    def initialize(id:)
-      @id = id    #XML Schema doesn't specify if required. No other attributes or nested elements.
-    end
+  class Type < Base
+    initialize_with :id
 
-    def self.call(type_xml)
-      return nil if type_xml.empty? # NOTE: maxOccur not specified.
-
-      new(id: from_xml(type_xml))
-    end
-
-    class << self
-
-      private
-
-      def from_xml(type_xml)
-        type_xml.attribute('id')&.value,
-      end
+    def self.from_xml(type_xml)
+      return nil if type_xml.nil?
+      
+      new(id: type_xml.attribute('id')&.value)
     end
   end
 end

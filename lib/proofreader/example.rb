@@ -1,41 +1,21 @@
+require_relative 'base'
 require_relative 'marker'
 
 class Proofreader
-  class Example
-    def initialize(correction:, type:, reason:, marker:, example:)
-      @correction = correction    # Optional Attribute
-      @type = type                # Optional Attribute
-      @reason = reason            # Optional Attribute
-      @marker = marker            # Nested Element
-      @example = example          # Text of example
-    end
+  class Example < Base
+    initialize_with :correction, :type, :reason, :marker, :example
 
-    def self.call(example_xmls)
-      return [] if example_xmls.empty? # NOTE: maxOccurs unbounded.
-
+    def self.from_xml(example_xmls)
+      return [] if example_xmls.nil?
+      
       example_xmls.map do |example_xml|
-        parsed_example = from_xml(example_xml) 
-
-        new(correction: parsed_example[:correction], 
-            type: parsed_example[:type],
-            reason: parsed_example[:reason],
-            marker: parsed_example[:marker],
-            example: parsed_example[:example])
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(example_xml)
-        {
+        new(
           correction: example_xml.attribute('correction')&.value,
           type: example_xml.attribute('type')&.value,
           reason: example_xml.attribute('reason')&.value,
-          marker: Marker.call(example_xml.xpath('marker')),
+          marker: Marker.from_xml(example_xml.xpath('marker')),
           example: example_xml.text
-        }
+        )
       end
     end
   end

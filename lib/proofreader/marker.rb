@@ -1,3 +1,4 @@
+require_relative 'base'
 require_relative 'or'
 require_relative 'token'
 require_relative 'unify'
@@ -6,47 +7,22 @@ require_relative 'phraseref'
 require_relative 'unify_ignore'
 
 class Proofreader
-  class Marker
-    def initialize(or_value:, token:, unify:, and_value:, phraseref:, unify_ignore:, text:)
-      @or = or_value               # Nested Element NOTE: Had to name it to or_value since 'or' is a keyword and was causing raised exception.
-      @token = token               # Nested Element
-      @unify = unify               # Nested Element
-      @and = and_value             # Nested Element NOTE: Had to name and_value since and is a keyword and was causing raised exception.
-      @phraseref = phraseref       # Nested Element
-      @unify_ignore = unify_ignore # Nested Element
-      @text = text                 # Marker Text
-    end
+  class Marker < Base
+    initialize_with :or_value, :token, :unify, :and_value, :phraseref, :unify_ignore, :text
 
-    def self.call(marker_xmls)
-      return [] if marker_xmls.empty? # NOTE: maxOccur unbounded. See TODO 2
-
+    def self.from_xml(marker_xmls)
+      return [] if marker_xmls.nil?
+      
       marker_xmls.map do |marker_xml|
-        parsed_marker = from_xml(marker_xml)
-
-        new(or_value: parsed_marker[:or_value],
-            token: parsed_marker[:token],
-            unify: parsed_marker[:unify],
-            and_value: parsed_marker[:and_value],
-            phraseref: parsed_marker[:phraseref],
-            unify_ignore: parsed_marker[:unify_ignore],
-            text: parsed_marker[:text])
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(marker_xml)
-        {
-          or_value: Or.call(marker_xml.xpath('or')),
-          token: Token.call(marker_xml.xpath('token')),
-          unify: Unify.call(marker_xml.xpath('unify')),
-          and_value: And.call(marker_xml.xpath('and')),
-          phraseref: Phraseref.call(marker_xml.xpath('pharseref')),
-          unify_ignore: UnifyIgnore.call(marker_xml.xpath('unify-ignore')),
+        new(
+          or_value: Or.from_xml(marker_xml.xpath('or')),
+          token: Token.from_xml(marker_xml.xpath('token')),
+          unify: Unify.from_xml(marker_xml.xpath('unify')),
+          and_value: And.from_xml(marker_xml.xpath('and')),
+          phraseref: Phraseref.from_xml(marker_xml.xpath('pharseref')),
+          unify_ignore: UnifyIgnore.from_xml(marker_xml.xpath('unify-ignore')),
           text: marker_xml.text
-        }
+        )
       end
     end
   end

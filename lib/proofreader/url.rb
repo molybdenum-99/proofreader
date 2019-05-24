@@ -1,22 +1,13 @@
+require_relative 'base'
+
 class Proofreader
-  class Url
-    def initialize(url:)
-      @url = url      # Found no other attributes or nested elements in XML schema.
-    end
+  class Url < Base
+    initialize_with :url
 
-    def self.call(url_xml)
-      return nil if url_xml.empty? # NOTE: maxOccur not specified
-
-      new(url: from_xml(url_xml))
-    end
-
-    class << self 
+    def self.from_xml(url_xml)
+      return nil if url_xml.nil?
       
-      private
-
-      def from_xml(url_xml)
-        url_xml.text
-      end
+      new(url: url_xml.text)
     end
   end
 end

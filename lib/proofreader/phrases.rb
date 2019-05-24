@@ -1,22 +1,14 @@
+require_relative 'base'
+require_relative 'phrase'
+
 class Proofreader
-  class Phrases
-    def initialize(phrase:)
-      @phrase = phrase  # Nested Element.
-    end
+  class Phrases < Base
+    initialize_with :phrase
 
-    def self.call(phrases_xml)
-      return nil if phrases_xml.empty? # NOTE: No maxOccurs. I also checked the languagetool repo, no examples of multiple phrases tags.
+    def self.from_xml(phrases_xml)
+      return nil if phrases_xml.nil?
       
-      new(phrase: from_xml(phrases_xml))
-    end
-
-    class << self
-
-      private
-
-      def from_xml(phrases_xml)
-        Phrase.call(phrases_xml.attribute('phrase'))
-      end
+      new(phrase: Phrase.from_xml(phrases_xml.attribute('phrase')))
     end
   end
 end

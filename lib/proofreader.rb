@@ -1,4 +1,5 @@
 require 'nokogiri'
+require 'smart_init'
 require_relative 'proofreader/version'
 require_relative 'proofreader/rules'
 require 'pry'
@@ -14,7 +15,7 @@ class Proofreader
   private 
 
   def build_rules
-    Rules.call(@doc.xpath('rules'))
+    Rules.from_xml(@doc.xpath('rules'))
   end
 end
 
@@ -30,7 +31,7 @@ pp proofreader.rules
 # TODO 2: How many namespaces? So far everything is under Proofreader. If a tag is only nested under a tag other than proofreader, should we namespace under it? Proofreader::Pattern::Token for example?
 # TODO 3: The Proofreaer::And, Proofreader::Or classes. Do they make sense? I wanted to map exactly to the XML schemas.
 # TODO 4: There are grammar AND disambiguator rules. EX from Portuguese: https://github.com/languagetool-org/languagetool/blob/4d5b1c323a37990ea2ee583c3c4d58e9d5f7d555/languagetool-language-modules/pt/src/main/resources/org/languagetool/resource/pt/disambiguation.xml
-# TODO 5: No antipattern class right? I removed it.
+# TODO 5: Which require_relatices are absolutely necessary.
 
 # Final
 # Go back and list all default attributes in the notes in each initializer

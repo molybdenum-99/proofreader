@@ -1,23 +1,14 @@
+require_relative 'base'
+
 class Proofreader
-  class Phraseref
-    def initialize(idref:)
-      @idref = idref          # Required Attribute
-    end
+  class Phraseref < Base
+    initialize_with :idref
 
-    def self.call(phraseref_xmls)
-      return [] if phraseref_xmls.empty? # NOTE: Doesn't specify maxOccurs, but see NOTE 1
-    
+    def self.from_xml(phraseref_xmls)
+      return [] if phraseref_xmls.nil?
+      
       phraseref_xmls.map do |phraseref_xml|
-        new(idref: from_xml(phraseref_xml))
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(phraseref_xml)
-        phraseref_xml.attribute('idref')&.value
+        new(idref: phraseref_xml.attribute('idref')&.value)
       end
     end
   end

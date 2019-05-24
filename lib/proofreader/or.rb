@@ -1,23 +1,14 @@
+require_relative 'base'
+
 class Proofreader
-  class Or
-    def initialize(token:) 
-      @token = token   # Nested Element
-    end
+  class Or < Base
+    initialize_with :token
 
-    def self.call(or_xmls)
-      return [] if or_xmls.empty? # NOTE: maxOccurs unbounded
-
+    def self.from_xml(or_xmls)
+      return [] if or_xmls.nil?
+      
       or_xmls.map do |or_xml|
-        new(token: from_xml(or_xml))
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(or_xml)
-        Token.call(or_xml.xpath('token'))
+        new(token: Token.from_xml(or_xml.xpath('token')))
       end
     end
   end

@@ -1,31 +1,18 @@
+require_relative 'base'
+
 class Proofreader
-  class UnifyIgnore
-    def initialize(and_value:, marker:, token:)
-      @and = and_value  # Nested Element #NOTE: Named and_value because using 'and' was causing an exception (since and is a keyword)
-      @marker = marker  # Nested Element
-      @token = token    # Nested Element
-    end
+  class UnifyIgnore < Base
+    initialize_with :and_value, :marker, :token
 
-    def self.call(unifiy_ignore_xmls) # NOTE: unifies because it says maxOccur: unbounded, so collection is expected
-      return [] if unifiy_ignore_xmls.empty?
+    def self.from_xml(unify_ignore_xmls)
+      return [] if unify_ignore_xmls.nil?
 
-      unifiy_ignore_xmls.map do |unify_ignore_xml|
-        parsed_unify_ignore = from_xml(unify_ignore_xml)
-
-        new(and_value: parsed_unify_ignore[:and_value], marker: parsed_unify_ignore[:marker], token: parsed_unify_ignore[:token])
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(unify_ignore_xml)
-        {
-          and_value: And.call(unify_ignore_xml.xpath('and')),
-          marker: Marker.call(unify_ignore_xml.xpath('marker')),
-          token: Token.call(unify_ignore_xml.xpath('token'))
-        }
+      unify_ignore_xmls.map do |unify_ignore_xml|
+        new(
+          and_value: And.from_xml(unify_ignore_xml.xpath('and')),
+          marker: Marker.from_xml(unify_ignore_xml.xpath('marker')),
+          token: Token.from_xml(unify_ignore_xml.xpath('token'))
+        )
       end
     end
   end

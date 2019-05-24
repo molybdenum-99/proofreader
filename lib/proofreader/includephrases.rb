@@ -1,29 +1,17 @@
-class Proofreader
-  class Includephrases
-    def initialize(phraseref:, includephrases:)
-      @phraseref = phraseref            # Nested Element. NOTE: No attributes listed in schema.
-      @includephrases = includephrases  # Text. TODO 1
-    end
+require_relative 'base'
 
-    def self.call(includephrases_xmls)
-      return [] if includephrases_xmls.empty? # NOTE: maxOccur unbounded
+class Proofreader
+  class Includephrases < Base
+    initialize_with :phraseref, :includephrases
+
+    def self.from_xml(includephrases_xmls)
+      return [] if includephrases_xmls.nil?
 
       includephrases_xmls.map do |includephrases_xml|
-        parsed_includephrases = from_xml(includephrases_xml)
-      
-        new(phraseref: parsed_includephrases[:phraseref], includephrases: parsed_includephrases[:includephrases])
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(includephrases_xml)
-        {
-          phraseref: Phraseref.call(includephrases_xml.xpath('phraseref')),
+        new(
+          phraseref: Phraseref.from_xml(includephrases_xml.xpath('phraseref')),
           includephrases: includephrases.text # TODO 1
-        }
+        )
       end
     end
   end

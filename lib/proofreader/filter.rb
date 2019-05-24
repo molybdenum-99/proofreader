@@ -1,28 +1,16 @@
+require_relative 'base'
+
 class Proofreader
-  class Filter
-    def initialize(filter_class:, args: )
-      @class = filter_class # Required Attribute
-      @args = args          # Required Attribute
-    end
+  class Filter < Base
+    initialize_with :filter_class, :args
 
-    def self.call(filter_xml)
-      return nil if filter_xml.empty? # NOTE: No mention of maxOccur in XML Schema
-
-      parsed_filter = from_xml(filter_xml)
+    def self.from_xml(filter_xml)
+      return nil if filter_xml.nil?
       
-      new(filter_class: parsed_filter[:class], args: parsed_filter[:args])
-    end
-
-    class << self
-
-      private
-
-      def from_xml(filter_xml)
-        {
-          filter_class: filter_xml.attribute('class')&.value,
-          args: filter_xml.attribute('args')&.value
-        }
-      end
+      new(
+        filter_class: filter_xml.attribute('class')&.value,
+        args: filter_xml.attribute('args')&.value
+      )
     end
   end
 end

@@ -1,31 +1,18 @@
+require_relative 'base'
 require_relative 'token'
 
 class Proofreader
-  class Equivalence
-    def initialize(type:, equivalence:)
-      @type = type      # Required Attribute
-      @tokens = tokens  # Nested Element . NOTE: Token is a singular tag, but I'm pluralizing it since we can have many tokens. Is this okay?
-    end
+  class Equivalence < Base
+    initialize_with :type, :equivalence
 
-    def self.call(equivalence_xmls)
-      return [] if equivalence_xmls.empty? # NOTE: No mention of maxOccur, but see NOTE 1.
-
-      equivalence_xmls.map do |equivalence_xml|
-        parsed_equivalence = from_xml(equivalence_xml)
+    def self.from_xml(equivalence_xmls)
+      return [] if equivalence_xmls.nil?
       
-        new(type: parsed_equivalence[:type], tokens: parsed_equivalence[:tokens])
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(equivalence_xml)
-        {
+      equivalence_xmls.map do |equivalence_xml|
+        new(
           type: equivalence_xml.attribute('type')&.value,
-          tokens: Token.call(equivalence_xml.xpath('token'))
-        }
+          tokens: Token.from_xml(equivalence_xml.xpath('token'))
+        )
       end
     end
   end

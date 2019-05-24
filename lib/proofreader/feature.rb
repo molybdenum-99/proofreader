@@ -1,29 +1,17 @@
+require_relative 'base'
+
 class Proofreader
-  class Feature
-    def initialize(id:, type:)
-      @id = id     # Required Attribute
-      @type = type # Nested Element
-    end
+  class Feature < Base
+    initialize_with :id, :type
 
-    def self.call(feature_xmls)
-      return [] if feature_xmls.empty? # NOTE: maxOccur unbounded.
-
+    def self.from_xml(feature_xml)
+      return [] feature_xml.nil?
+      
       feature_xmls.map do |feature_xml|
-        parsed_feature = from_xml(feature_xml)
-
-        new(id: parsed_feature[:id], type: parsed_feature[:type])
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(feature_xml)
-        {
+        new(
           id: feature_xml.attribute('id')&.value,
-          type: Type.call(feature_xml.xpath('type'))
-        }
+          type: Type.from_xml(feature_xml.xpath('type'))
+        )
       end
     end
   end

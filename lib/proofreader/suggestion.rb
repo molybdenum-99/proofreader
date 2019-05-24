@@ -1,35 +1,19 @@
+require_relative 'base'
 require_relative 'match'
 
 class Proofreader
-  class Suggestion
-    def initialize(suppress_misspelled:, suggestion:, matches:)
-      @suppress_misspelled = suppress_misspelled # Optional Attribute
-      @matches = matches                         # Nested Element
-      @suggestion = suggestion                   # Suggestion Text
-    end
+  class Suggestion < Base
+    initialize_with :suppress_misspelled, :suggestion, :matches
 
-    def self.call(suggestion_xmls)
-      return [] if suggestion_xmls.empty? # NOTE: maxOccur unbounded
-
+    def self.from_xml(suggestion_xmls)
+      return [] if suggestion_xmls.nil?
+      
       suggestion_xmls.map do |suggestion_xml|
-        parsed_suggestion = from_xml(suggestion_xml)
-
-        new(suppress_misspelled: parsed_suggestion[:suppress_misspelled], 
-            matches: parsed_suggestion[:matches], 
-            suggestion: parsed_suggestion[:suggestion])
-      end
-    end
-
-    class << self
-
-      private
-
-      def from_xml(suggestion_xml)
-        {
+        new(
           suppress_misspelled: suggestion_xml.attribute('supress_misspelled')&.value,
-          matches: Match.call(suggestion_xml.xpath('match')),
+          matches: Match.from_xml(suggestion_xml.xpath('match')),
           suggestion: suggestion_xml.text
-        }
+        )
       end
     end
   end
