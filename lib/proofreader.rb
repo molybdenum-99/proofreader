@@ -15,7 +15,7 @@ class Proofreader
   private 
 
   def build_rules
-    Rules.from_xml(@doc.xpath('rules'))
+    Rules.array_from_xml(@doc.xpath('rules'))
   end
 end
 

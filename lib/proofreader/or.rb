@@ -4,12 +4,8 @@ class Proofreader
   class Or < Base
     initialize_with :token
 
-    def self.from_xml(or_xmls)
-      return [] if or_xmls.nil?
-      
-      or_xmls.map do |or_xml|
-        new(token: Token.from_xml(or_xml.xpath('token')))
-      end
+    def self.from_xml(or_xml)
+      new(token: Token.array_from_xml(or_xml.xpath('token')))
     end
   end
 end

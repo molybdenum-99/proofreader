@@ -10,20 +10,16 @@ class Proofreader
   class Marker < Base
     initialize_with :or_value, :token, :unify, :and_value, :phraseref, :unify_ignore, :text
 
-    def self.from_xml(marker_xmls)
-      return [] if marker_xmls.nil?
-      
-      marker_xmls.map do |marker_xml|
-        new(
-          or_value: Or.from_xml(marker_xml.xpath('or')),
-          token: Token.from_xml(marker_xml.xpath('token')),
-          unify: Unify.from_xml(marker_xml.xpath('unify')),
-          and_value: And.from_xml(marker_xml.xpath('and')),
-          phraseref: Phraseref.from_xml(marker_xml.xpath('pharseref')),
-          unify_ignore: UnifyIgnore.from_xml(marker_xml.xpath('unify-ignore')),
-          text: marker_xml.text
-        )
-      end
+    def self.from_xml(marker_xml)
+      new(
+        or_value: Or.array_from_xml(marker_xml.xpath('or')),
+        token: Token.array_from_xml(marker_xml.xpath('token')),
+        unify: Unify.array_from_xml(marker_xml.xpath('unify')),
+        and_value: And.array_from_xml(marker_xml.xpath('and')),
+        phraseref: Phraseref.array_from_xml(marker_xml.xpath('pharseref')),
+        unify_ignore: UnifyIgnore.array_from_xml(marker_xml.xpath('unify-ignore')),
+        text: marker_xml.text
+      )
     end
   end
 end

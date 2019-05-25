@@ -5,14 +5,10 @@ class Proofreader
     initialize_with :id, :type
 
     def self.from_xml(feature_xml)
-      return [] feature_xml.nil?
-      
-      feature_xmls.map do |feature_xml|
-        new(
-          id: feature_xml.attribute('id')&.value,
-          type: Type.from_xml(feature_xml.xpath('type'))
-        )
-      end
+      new(
+        id: feature_xml.attribute('id')&.value,
+        type: Type.from_xml(feature_xml.xpath('type'))
+      )
     end
   end
 end

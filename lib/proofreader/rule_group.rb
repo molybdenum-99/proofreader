@@ -4,20 +4,16 @@ class Proofreader
   class RuleGroup < Base
     initialize_with :default, :name, :id, :type, :url, :short, :rule
 
-    def self.from_xml(rulegroup_xmls)
-      return [] if rulegroup_xmls.nil?
-      
-      rulegroup_xmls.map do |rulegroup_xml|
-        new(
-          default: rulegroup_xml.attribute('default')&.value == 'on' ? true : false,
-          name: rulegroup_xml.attribute('name')&.value,
-          id: rulegroup_xml.attribute('id')&.value,
-          type: rulegroup_xml.attribute('type')&.value,
-          url: Url.from_xml(rulegroup_xml.xpath('url')),
-          short: Short.from_xml(rulegroup_xml.xpath('short')),
-          rule: Rule.from_xml(rulegroup_xml.xpath('rule'))
-        )
-      end
+    def self.from_xml(rulegroup_xml)
+      new(
+        default: rulegroup_xml.attribute('default')&.value == 'on' ? true : false,
+        name: rulegroup_xml.attribute('name')&.value,
+        id: rulegroup_xml.attribute('id')&.value,
+        type: rulegroup_xml.attribute('type')&.value,
+        url: Url.from_xml(rulegroup_xml.xpath('url')),
+        short: Short.from_xml(rulegroup_xml.xpath('short')),
+        rule: Rule.array_from_xml(rulegroup_xml.xpath('rule'))
+      )
     end
   end
 end

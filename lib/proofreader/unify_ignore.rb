@@ -4,16 +4,12 @@ class Proofreader
   class UnifyIgnore < Base
     initialize_with :and_value, :marker, :token
 
-    def self.from_xml(unify_ignore_xmls)
-      return [] if unify_ignore_xmls.nil?
-
-      unify_ignore_xmls.map do |unify_ignore_xml|
-        new(
-          and_value: And.from_xml(unify_ignore_xml.xpath('and')),
-          marker: Marker.from_xml(unify_ignore_xml.xpath('marker')),
-          token: Token.from_xml(unify_ignore_xml.xpath('token'))
-        )
-      end
+    def self.from_xml(unify_ignore_xml)
+      new(
+        and_value: And.array_from_xml(unify_ignore_xml.xpath('and')),
+        marker: Marker.array_from_xml(unify_ignore_xml.xpath('marker')),
+        token: Token.array_from_xml(unify_ignore_xml.xpath('token'))
+      )
     end
   end
 end

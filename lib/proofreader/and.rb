@@ -4,15 +4,11 @@ class Proofreader
   class And < Base
     initialize_with :token, :marker
 
-    def self.from_xml(and_xmls)
-      return [] if and_xmls.nil?
-      
-      and_xmls.map do |and_xml|
-        new(
-          token: Token.from_xml(and_xml.xpath('token')),
-          marker: Marker.from_xml(and_xml.xpath('marker'))
-        )
-      end
+    def self.from_xml(and_xml)
+      new(
+        token: Token.array_from_xml(and_xml.xpath('token')),
+        marker: Marker.array_from_xml(and_xml.xpath('marker'))
+      )
     end
   end
 end

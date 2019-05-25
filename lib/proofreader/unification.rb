@@ -5,15 +5,11 @@ class Proofreader
   class Unification < Base
     initialize_with :feature, :equivalence
 
-    def self.from_xml(unification_xmls)
-      return [] if unification_xmls.nil?
-      
-      unification_xmls.map do |unification_xml|
-        new(
-          feature: unification_xml.attribute('feature')&.value,
-          equivalence: Equivalence.from_xml(unification_xml.xpath('equivalence'))
-        )
-      end
+    def self.from_xml(unification_xml)
+      new(
+        feature: unification_xml.attribute('feature')&.value,
+        equivalence: Equivalence.array_from_xml(unification_xml.xpath('equivalence'))
+      )
     end
   end
 end

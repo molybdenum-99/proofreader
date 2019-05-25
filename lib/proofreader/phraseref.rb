@@ -4,12 +4,8 @@ class Proofreader
   class Phraseref < Base
     initialize_with :idref
 
-    def self.from_xml(phraseref_xmls)
-      return [] if phraseref_xmls.nil?
-      
-      phraseref_xmls.map do |phraseref_xml|
-        new(idref: phraseref_xml.attribute('idref')&.value)
-      end
+    def self.from_xml(phraseref_xml)
+      new(idref: phraseref_xml.attribute('idref')&.value)
     end
   end
 end

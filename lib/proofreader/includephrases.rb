@@ -4,15 +4,11 @@ class Proofreader
   class Includephrases < Base
     initialize_with :phraseref, :includephrases
 
-    def self.from_xml(includephrases_xmls)
-      return [] if includephrases_xmls.nil?
-
-      includephrases_xmls.map do |includephrases_xml|
-        new(
-          phraseref: Phraseref.from_xml(includephrases_xml.xpath('phraseref')),
-          includephrases: includephrases.text # TODO 1
-        )
-      end
+    def self.from_xml(includephrases_xml)
+      new(
+        phraseref: Phraseref.array_from_xml(includephrases_xml.xpath('phraseref')),
+        includephrases: includephrases.text # TODO 1
+      )
     end
   end
 end

@@ -8,7 +8,7 @@ class Proofreader
     def self.from_xml(phrases_xml)
       return nil if phrases_xml.nil?
       
-      new(phrase: Phrase.from_xml(phrases_xml.attribute('phrase')))
+      new(phrase: Phrase.array_from_xml(phrases_xml.attribute('phrase')))
     end
   end
 end

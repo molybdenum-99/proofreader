@@ -4,19 +4,15 @@ class Proofreader
   class Unify < Base
     initialize_with :negate, :feature, :and_value, :marker, :token, :unify_ignore
      
-    def self.from_xml(unify_xmls)
-      return [] if unify_xmls.nil?
-      
-      unify_xmls.map do |unify_xml|
-        new(
-          negate: unify_xml.attribute('negate')&.value == 'yes' ? true : false, #TODO 1
-          feature: Feature.from_xml(unify_xml.xpath('feature')),
-          and_value: And.from_xml(unify_xml.xpath('and')),
-          marker: Marker.from_xml(unify_xml.xpath('marker')),
-          token: Token.from_xml(unify_xml.xpath('token')),
-          unify_ignore: UnifyIgnore.from_xml(unify_xml.xpath('unify_ignore'))
-        )
-      end
+    def self.from_xml(unify_xml)
+      new(
+        negate: unify_xml.attribute('negate')&.value == 'yes' ? true : false, #TODO 1
+        feature: Feature.array_from_xml(unify_xml.xpath('feature')),
+        and_value: And.array_from_xml(unify_xml.xpath('and')),
+        marker: Marker.array_from_xml(unify_xml.xpath('marker')),
+        token: Token.array_from_xml(unify_xml.xpath('token')),
+        unify_ignore: UnifyIgnore.array_from_xml(unify_xml.xpath('unify_ignore'))
+      )
     end
   end
 end

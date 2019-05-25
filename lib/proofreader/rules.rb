@@ -7,19 +7,15 @@ class Proofreader
   class Rules < Base
     initialize_with :lang, :idprefix, :integrate, :unification, :phrases, :categories
 
-    def self.from_xml(rules_xmls)
-      return [] if rules_xmls.nil?        
-
-      rules_xmls.map do |rules_xml|   
-        new(
-          lang: rules_xml.attribute('lang')&.value,
-          idprefix: rules_xml.attribute('idprefix')&.value,
-          integrate: rules_xml.attribute('integrate')&.value,
-          unification: Unification.from_xml(rules_xml.xpath('unification')),
-          phrases: Phrases.from_xml(rules_xml.xpath('phrases')),
-          categories: Category.from_xml(rules_xml.xpath('category'))
-        )
-      end
+    def self.from_xml(rules_xml)
+      new(
+        lang: rules_xml.attribute('lang')&.value,
+        idprefix: rules_xml.attribute('idprefix')&.value,
+        integrate: rules_xml.attribute('integrate')&.value,
+        unification: Unification.array_from_xml(rules_xml.xpath('unification')),
+        phrases: Phrases.from_xml(rules_xml.xpath('phrases')),
+        categories: Category.array_from_xml(rules_xml.xpath('category'))
+      )
     end
   end
 end

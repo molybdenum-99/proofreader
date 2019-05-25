@@ -5,16 +5,12 @@ class Proofreader
   class Message < Base
     initialize_with :suggestions, :matches, :text
 
-    def self.from_xml(message_xmls)
-      return [] if message_xmls.nil?
-      
-      message_xmls.map do |message_xml|
-        new( 
-          suggestions: Suggestion.from_xml(message_xml.xpath('suggestion')),
-          matches: Match.from_xml(message_xml.xpath('match')),
-          text: message_xml.text
-        )
-      end
+    def self.from_xml(message_xml)
+      new( 
+        suggestions: Suggestion.array_from_xml(message_xml.xpath('suggestion')),
+        matches: Match.array_from_xml(message_xml.xpath('match')),
+        text: message_xml.text
+      )
     end
   end
 end

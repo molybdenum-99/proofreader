@@ -5,18 +5,14 @@ class Proofreader
   class Example < Base
     initialize_with :correction, :type, :reason, :marker, :example
 
-    def self.from_xml(example_xmls)
-      return [] if example_xmls.nil?
-      
-      example_xmls.map do |example_xml|
-        new(
-          correction: example_xml.attribute('correction')&.value,
-          type: example_xml.attribute('type')&.value,
-          reason: example_xml.attribute('reason')&.value,
-          marker: Marker.from_xml(example_xml.xpath('marker')),
-          example: example_xml.text
-        )
-      end
+    def self.from_xml(example_xml)
+      new(
+        correction: example_xml.attribute('correction')&.value,
+        type: example_xml.attribute('type')&.value,
+        reason: example_xml.attribute('reason')&.value,
+        marker: Marker.array_from_xml(example_xml.xpath('marker')),
+        example: example_xml.text
+      )
     end
   end
 end

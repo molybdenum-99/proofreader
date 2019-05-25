@@ -2,7 +2,7 @@ require_relative 'base'
 
 class Proofreader
   class Exception < Base
-    initialize_with :postag_regexp, :negate_pos, :postag, :spacebefore, :inflected, :scope, :regexp, :negate, :case_sensitive 
+    initialize_with :postag_regexp, :negate_pos, :postag, :spacebefore, :inflected, :scope, :regexp, :negate, :case_sensitive, :exception_text
 
     def self.from_xml(exception_xml)
       return [] if exception_xml.nil?
@@ -16,7 +16,8 @@ class Proofreader
         scope: exception_xml.attribute('scope')&.value ? exception_xml.attribute('scope')&.value : 'current', # TODO 3
         regexp: exception_xml.attribute('regexp')&.value == 'yes' ? true : false,
         negate: exception_xml.attribute('negate')&.value == 'yes' ? true : false,
-        case_sensitive: exception_xml.attribute('case_sensitive')&.value
+        case_sensitive: exception_xml.attribute('case_sensitive')&.value,
+        exception_text: exception_xml.text
       )
     end
   end

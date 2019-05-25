@@ -11,25 +11,21 @@ class Proofreader
   class Rule < Base
     initialize_with :default, :name, :id, :type, :pattern, :filter, :regexp, :message, :suggestion, :url, :short, :examples
 
-    def self.from_xml(rule_xmls)
-      return [] if rule_xmls.nil?
-      
-      rule_xmls.map do |rule_xml|
-        new(
-          default: rule_xml.attribute('default')&.value == 'on' ? true : false,
-          name: rule_xml.attribute('name')&.value,
-          id: rule_xml.attribute('id')&.value,
-          type: rule_xml.attribute('type')&.value,
-          pattern: Pattern.from_xml(rule_xml.xpath('pattern')),
-          filter: Filter.from_xml(rule_xml.xpath('filter')),
-          regexp: Regexp.from_xml(rule_xml.xpath('regexp')),
-          message: Message.from_xml(rule_xml.xpath('message')),
-          suggestion: Suggestion.from_xml(rule_xml.xpath('suggestion')),
-          url: Url.from_xml(rule_xml.xpath('url')),
-          short: Short.from_xml(rule_xml.xpath('short')),
-          examples: Example.from_xml(rule_xml.xpath('example'))
-        )
-      end
+    def self.from_xml(rule_xml)
+      new(
+        default: rule_xml.attribute('default')&.value == 'on' ? true : false,
+        name: rule_xml.attribute('name')&.value,
+        id: rule_xml.attribute('id')&.value,
+        type: rule_xml.attribute('type')&.value,
+        pattern: Pattern.array_from_xml(rule_xml.xpath('pattern')),
+        filter: Filter.from_xml(rule_xml.xpath('filter')),
+        regexp: Regexp.from_xml(rule_xml.xpath('regexp')),
+        message: Message.array_from_xml(rule_xml.xpath('message')),
+        suggestion: Suggestion.array_from_xml(rule_xml.xpath('suggestion')),
+        url: Url.from_xml(rule_xml.xpath('url')),
+        short: Short.from_xml(rule_xml.xpath('short')),
+        examples: Example.array_from_xml(rule_xml.xpath('example'))
+      )
     end
   end
 end

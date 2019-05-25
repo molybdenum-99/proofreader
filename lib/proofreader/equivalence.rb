@@ -5,15 +5,11 @@ class Proofreader
   class Equivalence < Base
     initialize_with :type, :equivalence
 
-    def self.from_xml(equivalence_xmls)
-      return [] if equivalence_xmls.nil?
-      
-      equivalence_xmls.map do |equivalence_xml|
-        new(
-          type: equivalence_xml.attribute('type')&.value,
-          tokens: Token.from_xml(equivalence_xml.xpath('token'))
-        )
-      end
+    def self.from_xml(equivalence_xml)
+      new(
+        type: equivalence_xml.attribute('type')&.value,
+        tokens: Token.array_from_xml(equivalence_xml.xpath('token'))
+      )
     end
   end
 end
