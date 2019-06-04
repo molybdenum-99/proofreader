@@ -19,8 +19,8 @@ class Proofreader
   end
 end
 
-proofreader = Proofreader.new # NOTE: In the future we can setup for 'en', but only parsing English for now
-pp proofreader.rules
+#proofreader = Proofreader.new # NOTE: In the future we can setup for 'en', but only parsing English for now
+#pp proofreader.rules
 
 # XML Schema Sources:
 # Part 1: https://github.com/languagetool-org/languagetool/blob/master/languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd
