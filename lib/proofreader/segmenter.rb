@@ -5,7 +5,7 @@ class Proofreader
     initialize_with :text, :language, segments: nil
     attr_reader :segments
 
-    def tokenize
+    def segment
       @segments = ::PragmaticSegmenter::Segmenter.new(text: @text, language: @language).segment
     end
   end
