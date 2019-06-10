@@ -4,6 +4,7 @@ PATH
     proofreader (0.1.0)
       nokogiri
       pragmatic_segmenter
+      pragmatic_tokenizer
       smart_init
 
 GEM
@@ -17,6 +18,8 @@ GEM
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     pragmatic_segmenter (0.3.22)
+      unicode
+    pragmatic_tokenizer (3.0.7)
       unicode
     pry (0.12.2)
       coderay (~> 1.1.0)
