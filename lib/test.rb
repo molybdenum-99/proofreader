@@ -1,11 +1,25 @@
 require_relative 'proofreader'
-require_relative 'proofreader/segmenter'
-require_relative 'proofreader/tokenizer'
+require_relative 'proofreader/input_text_parser'
+require_relative 'proofreader/rule_set'
 
+# Test rule set construction
+xml = Nokogiri::XML(open('../data/en/grammar.xml'))
+rule_set = Proofreader::RuleSet.new(xml: xml, rules: nil).read
+p rule_set
+
+# Test input text parsing
 text = "Hello world. My name is Mr. Smith. I work for the U.S. Government and I live in the U.S. I live in New York."
 
-segments = Proofreader::Segmenter.new(text: text, language: 'en').segment
-p segments
+input_text_parser = Proofreader::InputTextParser.new(text: text)
+input_text_parser.parse
 
-tokens = segments.map { |segment| Proofreader::Tokenizer.new(segment: segment, language: 'en').tokenize }
+segments = input_text_parser.segments
+tokens = input_text_parser.tokens
+
+p segments
 p tokens
+
+
+
+
+
