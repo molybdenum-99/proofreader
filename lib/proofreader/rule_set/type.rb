@@ -1,13 +1,15 @@
 require_relative 'base'
 
 class Proofreader
-  class Type < Base
-    initialize_with :id
+  class RuleSet
+    class Type < Base
+      initialize_with :id
 
-    def self.from_xml(type_xml)
-      return nil if type_xml.nil?
-      
-      new(id: type_xml.attribute('id')&.value)
+      def self.from_xml(type_xml)
+        return nil if type_xml.nil?
+        
+        new(id: type_xml.attribute('id')&.value)
+      end
     end
   end
 end

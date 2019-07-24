@@ -1,13 +1,15 @@
 require_relative 'base'
 
 class Proofreader
-  class Url < Base
-    initialize_with :url
+  class RuleSet
+    class Url < Base
+      initialize_with :url
 
-    def self.from_xml(url_xml)
-      return nil if url_xml.nil?
-      
-      new(url: url_xml.text)
+      def self.from_xml(url_xml)
+        return nil if url_xml.nil?
+        
+        new(url: url_xml.text)
+      end
     end
   end
 end

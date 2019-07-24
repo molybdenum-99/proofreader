@@ -2,13 +2,15 @@ require_relative 'base'
 require_relative 'phrase'
 
 class Proofreader
-  class Phrases < Base
-    initialize_with :phrase
+  class RuleSet
+    class Phrases < Base
+      initialize_with :phrase
 
-    def self.from_xml(phrases_xml)
-      return nil if phrases_xml.nil?
-      
-      new(phrase: Phrase.array_from_xml(phrases_xml.attribute('phrase')))
+      def self.from_xml(phrases_xml)
+        return nil if phrases_xml.nil?
+        
+        new(phrase: Phrase.array_from_xml(phrases_xml.attribute('phrase')))
+      end
     end
   end
 end

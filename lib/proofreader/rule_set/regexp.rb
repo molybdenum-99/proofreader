@@ -1,17 +1,19 @@
 require_relative 'base'
 
 class Proofreader
-  class Regexp < Base
-    initialize_with :case_sensitive, :type, :mark
+  class RuleSet
+    class Regexp < Base
+      initialize_with :case_sensitive, :type, :mark
 
-    def self.from_xml(regexp_xml)
-      return nil if regexp_xml.nil?
-    
-      new(
-        case_sensitive: !!regexp_xml.attribute('case_sensitive')&.value == 'yes' ? true : false,
-        type: regexp_xml.attribute('type')&.value,
-        mark: regexp_xml.attribute('mark')&.value
-      )
+      def self.from_xml(regexp_xml)
+        return nil if regexp_xml.nil?
+      
+        new(
+          case_sensitive: !!regexp_xml.attribute('case_sensitive')&.value == 'yes' ? true : false,
+          type: regexp_xml.attribute('type')&.value,
+          mark: regexp_xml.attribute('mark')&.value
+        )
+      end
     end
   end
 end

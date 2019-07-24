@@ -1,22 +1,7 @@
-require 'nokogiri'
-require 'smart_init'
+
 require_relative 'proofreader/version'
-require_relative 'proofreader/rules'
-require 'pry'
 
 class Proofreader
-  attr_reader :rules
-
-  def initialize
-    @doc = ::Nokogiri::XML(open('./data/en/grammar.xml'))
-    @rules = build_rules # Nested Element
-  end
-
-  private 
-
-  def build_rules
-    Rules.array_from_xml(@doc.xpath('rules'))
-  end
 end
 
 #proofreader = Proofreader.new # NOTE: In the future we can setup for 'en', but only parsing English for now

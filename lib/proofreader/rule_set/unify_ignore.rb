@@ -1,15 +1,17 @@
 require_relative 'base'
 
 class Proofreader
-  class UnifyIgnore < Base
-    initialize_with :and_value, :marker, :token
+  class RuleSet
+    class UnifyIgnore < Base
+      initialize_with :and_value, :marker, :token
 
-    def self.from_xml(unify_ignore_xml)
-      new(
-        and_value: And.array_from_xml(unify_ignore_xml.xpath('and')),
-        marker: Marker.array_from_xml(unify_ignore_xml.xpath('marker')),
-        token: Token.array_from_xml(unify_ignore_xml.xpath('token'))
-      )
+      def self.from_xml(unify_ignore_xml)
+        new(
+          and_value: And.array_from_xml(unify_ignore_xml.xpath('and')),
+          marker: Marker.array_from_xml(unify_ignore_xml.xpath('marker')),
+          token: Token.array_from_xml(unify_ignore_xml.xpath('token'))
+        )
+      end
     end
   end
 end

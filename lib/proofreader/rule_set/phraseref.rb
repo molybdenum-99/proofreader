@@ -1,11 +1,13 @@
 require_relative 'base'
 
 class Proofreader
-  class Phraseref < Base
-    initialize_with :idref
+  class RuleSet
+    class Phraseref < Base
+      initialize_with :idref
 
-    def self.from_xml(phraseref_xml)
-      new(idref: phraseref_xml.attribute('idref')&.value)
+      def self.from_xml(phraseref_xml)
+        new(idref: phraseref_xml.attribute('idref')&.value)
+      end
     end
   end
 end

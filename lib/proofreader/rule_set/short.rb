@@ -1,13 +1,15 @@
 require_relative 'base'
 
 class Proofreader
-  class Short < Base
-    initialize_with :short
+  class RuleSet
+    class Short < Base
+      initialize_with :short
 
-    def self.from_xml(short_xml)
-      return nil if short_xml.nil?
-      
-      new(short: short_xml.text)
+      def self.from_xml(short_xml)
+        return nil if short_xml.nil?
+        
+        new(short: short_xml.text)
+      end
     end
   end
 end

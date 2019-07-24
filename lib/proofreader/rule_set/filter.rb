@@ -1,16 +1,18 @@
 require_relative 'base'
 
 class Proofreader
-  class Filter < Base
-    initialize_with :filter_class, :args
+  class RuleSet
+    class Filter < Base
+      initialize_with :filter_class, :args
 
-    def self.from_xml(filter_xml)
-      return nil if filter_xml.nil?
-      
-      new(
-        filter_class: filter_xml.attribute('class')&.value,
-        args: filter_xml.attribute('args')&.value
-      )
+      def self.from_xml(filter_xml)
+        return nil if filter_xml.nil?
+        
+        new(
+          filter_class: filter_xml.attribute('class')&.value,
+          args: filter_xml.attribute('args')&.value
+        )
+      end
     end
   end
 end

@@ -1,14 +1,16 @@
 require_relative 'base'
 
 class Proofreader
-  class Includephrases < Base
-    initialize_with :phraseref, :includephrases
+  class RuleSet
+    class Includephrases < Base
+      initialize_with :phraseref, :includephrases
 
-    def self.from_xml(includephrases_xml)
-      new(
-        phraseref: Phraseref.array_from_xml(includephrases_xml.xpath('phraseref')),
-        includephrases: includephrases.text # TODO 1
-      )
+      def self.from_xml(includephrases_xml)
+        new(
+          phraseref: Phraseref.array_from_xml(includephrases_xml.xpath('phraseref')),
+          includephrases: includephrases.text # TODO 1
+        )
+      end
     end
   end
 end

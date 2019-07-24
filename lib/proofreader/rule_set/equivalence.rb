@@ -2,14 +2,16 @@ require_relative 'base'
 require_relative 'token'
 
 class Proofreader
-  class Equivalence < Base
-    initialize_with :type, :equivalence
+  class RuleSet
+    class Equivalence < Base
+      initialize_with :type, :equivalence
 
-    def self.from_xml(equivalence_xml)
-      new(
-        type: equivalence_xml.attribute('type')&.value,
-        tokens: Token.array_from_xml(equivalence_xml.xpath('token'))
-      )
+      def self.from_xml(equivalence_xml)
+        new(
+          type: equivalence_xml.attribute('type')&.value,
+          tokens: Token.array_from_xml(equivalence_xml.xpath('token'))
+        )
+      end
     end
   end
 end

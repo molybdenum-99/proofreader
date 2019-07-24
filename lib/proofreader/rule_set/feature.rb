@@ -1,14 +1,16 @@
 require_relative 'base'
 
 class Proofreader
-  class Feature < Base
-    initialize_with :id, :type
+  class RuleSet
+    class Feature < Base
+      initialize_with :id, :type
 
-    def self.from_xml(feature_xml)
-      new(
-        id: feature_xml.attribute('id')&.value,
-        type: Type.from_xml(feature_xml.xpath('type'))
-      )
+      def self.from_xml(feature_xml)
+        new(
+          id: feature_xml.attribute('id')&.value,
+          type: Type.from_xml(feature_xml.xpath('type'))
+        )
+      end
     end
   end
 end
