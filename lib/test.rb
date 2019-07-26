@@ -13,11 +13,8 @@ text = "Hello world. My name is Mr. Smith. I work for the U.S. Government and I 
 input_text_parser = Proofreader::InputTextParser.new(text: text)
 input_text_parser.parse
 
-segments = input_text_parser.segments
-tokens = input_text_parser.tokens
-
-p segments
-p tokens
+p segments = input_text_parser.segments
+p tokens = input_text_parser.tokens
 
 
 

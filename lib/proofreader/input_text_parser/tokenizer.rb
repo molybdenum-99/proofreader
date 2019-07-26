@@ -5,20 +5,21 @@ class Proofreader
     class Tokenizer
       attr_reader :tokens
 
-      def initialize(segment:, language: 'en', tokens: nil)
-        @segment = segment
+      def initialize(language: 'en', segments:)
         @language = language
-        @tokens = tokens
+        @segments = segments
+        @tokens = []
       end
 
-      def tokenize
+      def call
         tokenizer = ::PragmaticTokenizer::Tokenizer.new(language: @language, 
                                                         expand_contractions: true, 
                                                         punctuation: :none,
                                                         classic_filter: true,
                                                         downcase: false,
                                                         contractions: { 'mr.' => 'mister', 'u.s.' => 'united states' })
-        @tokens = tokenizer.tokenize(@segment)
+
+        @tokens = @segments.map { |segment| tokenizer.tokenize(segment) }
       end
     end
   end

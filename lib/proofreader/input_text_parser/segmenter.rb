@@ -5,13 +5,13 @@ class Proofreader
     class Segmenter
       attr_reader :segments
 
-      def initialize(text:, language:, segments: nil) 
+      def initialize(text:, language:) 
         @text = text
         @language = language
-        @segments = segments
+        @segments = []
       end
 
-      def segment
+      def call
         @segments = ::PragmaticSegmenter::Segmenter.new(text: @text, language: @language).segment
       end
     end
