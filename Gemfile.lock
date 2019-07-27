@@ -3,6 +3,9 @@ PATH
   specs:
     proofreader (0.1.0)
       nokogiri
+      pragmatic_segmenter
+      pragmatic_tokenizer
+      smart_init
 
 GEM
   remote: https://rubygems.org/
@@ -14,6 +17,10 @@ GEM
     mini_portile2 (2.4.0)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
+    pragmatic_segmenter (0.3.22)
+      unicode
+    pragmatic_tokenizer (3.0.7)
+      unicode
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -32,6 +39,7 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     smart_init (3.3.0)
+    unicode (0.4.4.4)
 
 PLATFORMS
   ruby
@@ -43,7 +51,6 @@ DEPENDENCIES
   pry
   rake
   rspec
-  smart_init
 
 BUNDLED WITH
    1.17.2
